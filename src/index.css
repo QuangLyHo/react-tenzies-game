@@ -41,7 +41,7 @@ body {
 main {
   background: var(--card-bg);
   width: 500px;
-  height: 500px;
+  height: 580px;
   border-radius: 8px;
   padding: 1.25em;
   margin: 4em auto;
@@ -72,7 +72,7 @@ main {
   font-weight: 700;
 }
 
-span {
+.subtitle-block {
   display: block;
 }
 
@@ -109,4 +109,37 @@ span {
 
 .roll-btn:active {
   box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.15);
+}
+
+.timer-container {
+  color: #183FE1;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.timer {
+  font-family: inherit;
+  margin: .1em;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.author {
+  background: var(--card-bg);
+  color: var(--font);
+  padding: .5em 3em;
+  border-radius: 8px;
+  font-size: .8rem;
+}
+
+.quang {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: capitalize;
 }

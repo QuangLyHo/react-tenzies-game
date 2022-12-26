@@ -2,19 +2,35 @@ import { useState, useEffect } from 'react'
 import { nanoid } from 'nanoid'
 import Die from './Die'
 import Confetti from 'react-confetti'
+import Timer from './Timer'
 
 function App() {
-  const [dice, setDice] = useState(getNewDice())
   const [tenzies, setTenzies] = useState(false)
+  const [time, setTime] = useState(0)
+  const [running, setRunning] = useState(false)
+  const [dice, setDice] = useState(getNewDice())
 
   useEffect(() => {
+    
+    let interval
+    
+    if (running) {
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime + 10)
+      }, 10);
+    } 
+
     const allHeld = dice.every(die => die.isHeld)
     const firstValue = dice[0].value
     const sameValue = dice.every(die => die.value === firstValue)
 
     if (allHeld && sameValue) {
+      clearInterval(interval)
       setTenzies(true)
     }
+
+    return () => clearInterval(interval)
+
   }, [dice])
 
   function generateDice() {
@@ -35,6 +51,7 @@ function App() {
   }
 
   function holdDice(diceId) {
+    setRunning(true)
     setDice(prevDice => prevDice.map(die => {
       return die.id === diceId ? 
         {...die, isHeld: !die.isHeld} : die
@@ -49,7 +66,9 @@ function App() {
           generateDice()
       }))
     } else {
+      setTime(0)
       setTenzies(false)
+      setRunning(prevRunning => !prevRunning)
       setDice(getNewDice())
     }
   }
@@ -64,20 +83,31 @@ function App() {
   })
   
   return (
-    <main>
-      {tenzies && <Confetti />}
-      <h1 className='title'>Tenzies</h1>
-      <p className='subtitle'>Roll until all dice are the same. <span>Click each die to freeze it at its current value between rolls.</span></p>
-      <div className='dice-container'>
-        {diceElement}
+    <div className='card'>
+      <main>
+        {tenzies && <Confetti />}
+        <h1 className='title'>Tenzies</h1>
+        <p className='subtitle'>Roll until all dice are the same. <span className='subtitle-block'>Click each die to freeze it at its current value between rolls.</span></p>
+        
+        <div className='dice-container'>
+          {diceElement}
+        </div>
+        <div>
+          <Timer time={time}/>
+        </div>
+
+        <button 
+          className='roll-btn' 
+          onClick={rollDice}
+        >
+          {tenzies ? 'New Game' : 'Roll'}
+        </button>
+      </main>
+      <div>
+        <p className='author'>created by 
+          <span className='quang'> quang</span></p>
       </div>
-      <button 
-        className='roll-btn' 
-        onClick={rollDice}
-      >
-        {tenzies ? 'New Game' : 'Roll'}
-      </button>
-    </main>
+    </div>
   )
 }
 
