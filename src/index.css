@@ -142,4 +142,5 @@ main {
   font-size: 1.25rem;
   font-weight: 700;
   text-transform: capitalize;
+  letter-spacing: 1px;
 }
